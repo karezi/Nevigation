@@ -1,0 +1,156 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Navigator</title>
+	<meta charset="utf-8" />
+	<style type="text/css">
+		body{
+			font-family: "Microsoft YaHei"; 
+			margin: 0px;
+			padding: 0px;			
+		}
+		#title{
+			text-align: center;
+			background-color: rgb(0,153,255);
+			padding-top: 20px;
+			padding-bottom: 20px;
+		}
+		h1{
+			margin: 0px;
+			color: white;
+		}
+		a{
+			border: 2px solid #aaa;
+			text-decoration: none;
+		}
+		.bar{
+			margin:8px;
+			padding: 5px;
+		}
+		input[type="button"]{
+			border:none;
+			background-color: rgb(0,111,255);
+		}
+	</style>
+	<script type="text/javascript">
+	var websites = [{
+		"index": "0",
+		"name": "大班论坛",
+		"site": "http://bbs.buaa1106.org/forum.php",
+		"describe": ""
+	}, {
+		"index": "1",
+		"name": "算法与设计",
+		"site": "ftp://218.241.236.109",
+		"describe": "algorithm&algorithm"
+	}, {
+		"index": "2",
+		"name": "组合数学",
+		"site": "ftp://course.act.buaa.edu.cn",
+		"describe": "课件下载:download&student ; 作业上传:upload&student"
+	}, {
+		"index": "3",
+		"name": "面向对象编程",
+		"site": "http://judge.sei.buaa.edu.cn",
+		"describe": "学号&学号/model&model"
+	}, {
+		"index": "4",
+		"name": "StarUML",
+		"site": "http://staruml.sourceforge.net/en/",
+		"describe": ""
+	}, {
+		"index": "5",
+		"name": "eclipse",
+		"site": "http://www.eclipse.org/downloads/",
+		"describe": ""
+	}, {
+		"index": "6",
+		"name": "面向对象编程SVN客户端",
+		"site": "http://219.224.165.41/repos",
+		"describe": "学号&学号"
+	}, {
+		"index": "7",
+		"name": "面向对象编程论坛",
+		"site": "http://219.224.165.26/bbs",
+		"describe": ""
+	}, {
+		"index": "8",
+		"name": "面向对象编程论坛注册",
+		"site": "http://219.224.165.26/bbs/member.php?mod=register",
+		"describe": ""
+	}];
+
+	function fill(i) {
+		if(localStorage.getItem(localStorage.key(i)) == "undefined") return;
+		var value = eval('(' + localStorage.getItem(localStorage.key(i)) + ')');
+		var drop = document.createElement("button");
+		drop.setAttribute("onclick", "drop(this);");
+		drop.setAttribute("id", value.index);
+		drop.innerHTML = "-";
+		var newa = document.createElement("a");
+		newa.target = "_blank";
+		newa.href = value.site;
+		newa.innerHTML = value.name;
+		if (value.describe != "") var describe = document.createTextNode("	(注：" + value.describe + ")");
+		else var describe = document.createTextNode("");
+		var bar = document.createElement("div");
+		bar.setAttribute("class", "bar");
+		var website = document.getElementById("websites");
+		bar.appendChild(drop);
+		bar.appendChild(newa);
+		bar.appendChild(describe);
+		website.appendChild(bar);
+	}
+
+	function drop(object) {
+		object.parentNode.parentNode.removeChild(object.parentNode);
+		localStorage.removeItem("website" + object.getAttribute("id"));
+		window.location.reload();
+	}
+
+	function add() {
+		var index = localStorage.length;
+//		websites.push("{\"index\":\"" + index + "\", \"name\":\"" + document.getElementById("name").value + "\", \"site\":\"" + document.getElementById("site").value + "\", \"describe\":\"" + document.getElementById("describe").value + "\"}");
+		localStorage.setItem("website" + index, "{\"index\":\"" + index + "\", \"name\":\"" + document.getElementById("name").value + "\", \"site\":\"" + document.getElementById("site").value + "\", \"describe\":\"" + document.getElementById("describe").value + "\"}");
+		init();
+		window.location.reload();
+	}
+
+	function clear() {
+		var web = document.getElementById("websites");
+		while (web.firstChild)
+			web.removeChild(web.firstChild);
+	}
+
+	function clearAll(){
+		clear();
+		localStorage.clear();
+		window.location.reload();
+	}
+
+	function addInit() {
+		clear();
+		for (var i = 0; i < websites.length; i++)
+		localStorage.setItem("website" + i, JSON.stringify(websites[i]));
+		window.location.reload();
+	}
+
+	function init() {
+		clear();
+		for (var i = 0; i < localStorage.length; i++) {
+			fill(i);
+		}
+	}
+	</script>
+</head>
+<body onload="init();">
+<div id="title"><h1>计算机学院大二网站导航</h1></div>
+<div id="websites">
+</div>
+添加：<br />
+网站名称：<input type="text" id="name" />网站地址：<input type="text" id="site" value="http://" />网站备注：<input type="text" id="describe" />
+<button onclick="add();">+</button>
+<input type="button" value="初始化" onclick="addInit();" />
+<input type="button" value="清除所有" onclick="clearAll();" /><br />
+</body>
+</html>

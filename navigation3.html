@@ -1,0 +1,166 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Navigator</title>
+	<meta charset="utf-8" />
+	<style type="text/css">
+		body{
+			font-family: "Microsoft YaHei"; 
+			margin: 0px;
+			padding: 0px;			
+		}
+		#title{
+			text-align: center;
+			background-color: rgba(0,153,255,.7);
+			padding-top: 20px;
+			padding-bottom: 20px;
+		}
+		h1, h4{
+			margin: 0px;
+			color: white;
+		}
+		a{
+			text-decoration: none;
+		}
+		.bar{
+			margin:8px;
+			padding: 5px;
+		}
+		input[type="button"]{
+			border:1px solid #aaa;
+			background-color: rgba(0,111,255,.8);
+			border-radius: 3px;
+		}
+		button{
+			border-radius: 3px;
+		}
+		#footer, #footer-show{
+			position: fixed;
+			bottom: 0px;
+			text-align: right;
+			background-color: rgba(0,153,255,.4);
+		}
+		#footer{
+			width: 100%;
+			display:inline;
+		}
+		#footer-show{
+			right: 0px;
+			display: none;
+		}
+		.add{
+			text-indent: 1em;
+		}
+	</style>
+	<script type="text/javascript">
+	var websites = [{
+		"index": "0",
+		"name": "百度",
+		"site": "http://www.baidu.com",
+		"describe": "搜索"
+	},  {
+		"index": "1",
+		"name": "163邮箱",
+		"site": "http://mail.163.com",
+		"describe": "工作"
+	}, {
+		"index": "2",
+		"name": "人人",
+		"site": "http://www.renren.com",
+		"describe": "社交"
+	}];
+
+	function fill(i) {
+		if(localStorage.getItem(localStorage.key(i)) == "undefined") return;
+		var value = eval('(' + localStorage.getItem(localStorage.key(i)) + ')');
+		var drop = document.createElement("button");
+		drop.setAttribute("onclick", "drop(this);");
+		drop.setAttribute("id", value.index);
+		drop.innerHTML = "-";
+		var newa = document.createElement("a");
+		newa.target = "_blank";
+		newa.href = value.site;
+		newa.innerHTML = value.name;
+		if (value.describe != "") var describe = document.createTextNode("	(" + value.describe + ")");
+		else var describe = document.createTextNode("");
+		var bar = document.createElement("div");
+		bar.setAttribute("class", "bar");
+		var website = document.getElementById("websites");
+		bar.appendChild(drop);
+		bar.appendChild(newa);
+		bar.appendChild(describe);
+		website.appendChild(bar);
+	}
+
+	function drop(object) {
+		object.parentNode.parentNode.removeChild(object.parentNode);
+		localStorage.removeItem("website" + object.getAttribute("id"));
+		window.location.reload();
+	}
+
+	function add() {
+		var index = localStorage.length;
+		localStorage.setItem("website" + index, "{\"index\":\"" + index + "\", \"name\":\"" + document.getElementById("name").value + "\", \"site\":\"" + document.getElementById("site").value + "\", \"describe\":\"" + document.getElementById("describe").value + "\"}");
+		init();
+		window.location.reload();
+	}
+
+	function clear() {
+		var web = document.getElementById("websites");
+		while (web.firstChild)
+			web.removeChild(web.firstChild);
+	}
+
+	function clearAll(){
+		clear();
+		localStorage.clear();
+		window.location.reload();
+	}
+
+	function addInit() {
+		clear();
+		for (var i = 0; i < websites.length; i++)
+		localStorage.setItem("website" + i, JSON.stringify(websites[i]));
+		window.location.reload();
+	}
+
+	function init() {
+		clear();
+		for (var i = 0; i < localStorage.length; i++) {
+			fill(i);
+		}
+	}
+
+	function hide(){
+		document.getElementById("footer").style.display = "none";
+		document.getElementById("footer-show").style.display = "inline";
+	}
+
+	function show(){
+		document.getElementById("footer-show").style.display = "none";
+		document.getElementById("footer").style.display = "inline";
+	}
+	</script>
+</head>
+<body onload="init();">
+<div id="title"><h1>个 人 网 站 导 航</h1></div>
+<div id="websites"></div>
+<div class="add">添加：</div>
+<div class="add">网站名称：<input type="text" id="name" />&nbsp;&nbsp;网站地址：<input type="text" id="site" value="http://" />&nbsp;&nbsp;网站备注：<input type="text" id="describe" />
+<button onclick="add();" style="width:60px">+</button>
+<input type="button" value="初始化" onclick="addInit();" />
+<input type="button" value="清除所有" onclick="clearAll();" />
+</div><br />
+<div id="footer">
+	<h4>
+		<div style="position:fixed; text-aligh:left">
+			Powered by <a href="http://www.renren.com/414929313" target="_blank">karezi</a>
+		</div>
+		<div id="hide" style="position:float; text-align:right;" onclick="hide();">
+			<a href="#" onclick="hide();">hide</a>
+		</div>
+	</h4>
+</div>
+<div id="footer-show"><a id="show" href="#" onclick="show();"><strong>show</strong></a></div>
+</body>
+</html>

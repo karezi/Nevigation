@@ -1,0 +1,68 @@
+<html>
+<head>
+	<title>Navigator</title>
+	<meta charset="utf-8" />
+	<style type="text/css">
+		body{
+			font-family: "Microsoft YaHei"; 			
+		}
+		#title{
+			text-align: center;
+		}
+		a{
+			border: 1px solid #aaa;
+			text-decoration: none;
+		}
+		.bar{
+			margin:8px;
+		}
+	</style>
+	<script type="text/javascript">
+	function newLabel(){
+		var taga = document.getElementsByTagName('a');
+		for(var i = 0; i < taga.length; i++)
+			taga[i].target = "_blank";
+	}
+	function add(){
+		var drop = document.createElement("button");
+		drop.setAttribute("onclick", "drop(this);");
+		drop.innerHTML = "-";
+		var newa = document.createElement("a");
+		newa.target = "_blank";
+		newa.href = document.getElementById("site").value;
+		newa.innerHTML = document.getElementById("name").value;
+		var describe = document.createTextNode("(注：" + document.getElementById("describe").value + ")");
+		var bar = document.createElement("div");
+		bar.setAttribute("class", "bar");
+		var website = document.getElementById("websites");
+		bar.appendChild(drop);
+		bar.appendChild(newa);		
+		bar.appendChild(describe);
+		website.appendChild(bar);
+
+	}
+	function drop(object){
+		object.parentNode.parentNode.removeChild(object.parentNode);
+	}
+	</script>
+</head>
+<body onload="newLabel();">
+<div id="title"><h1>计算机学院大二网站导航</h1></div>
+<div id="websites">
+<div class="bar"><button onclick="drop(this);">-</button><a href="http://bbs.buaa1106.org/forum.php">大班论坛</a></div>
+<div class="bar"><button onclick="drop(this);">-</button><a href="ftp://218.241.236.109">算法与设计ftp</a>algorithm</div>
+<div class="bar"><button onclick="drop(this);">-</button><a href="ftp://download&student@course.act.buaa.edu.cn">组合数学课件下载</a></div>
+<div class="bar"><button onclick="drop(this);">-</button><a href="ftp://course.act.buaa.edu.cn">组合数学作业上传</a></div>
+<div class="bar"><button onclick="drop(this);">-</button><a href="http://judge.sei.buaa.edu.cn">面向对象编程</a>&nbsp;&nbsp;(注：学号&学号/model&model)</div>
+<div class="bar"><button onclick="drop(this);">-</button><a href="http://staruml.sourceforge.net/en/">StarUML</a></div>
+<div class="bar"><button onclick="drop(this);">-</button><a href="http://www.eclipse.org/downloads/">eclipse</a></div>
+<div class="bar"><button onclick="drop(this);">-</button><a href="http://219.224.165.41/repos">面向对象编程SVN客户端</a>&nbsp;&nbsp;(注：学号&学号)</div>
+<div class="bar"><button onclick="drop(this);">-</button><a href="http://course.buaa.edu.cn:8081">UML_Designer</a></div>
+<div class="bar"><button onclick="drop(this);">-</button><a href="http://219.224.165.26/bbs">面向对象编程论坛</a></div>
+<div class="bar"><button onclick="drop(this);">-</button><a href="http://219.224.165.26/bbs/member.php?mod=register">面向对象编程论坛注册</a></div>
+</div>
+添加：<br />
+网站名称：<input type="text" id="name" />网站地址：<input type="text" id="site" value="http://" />网站备注：<input type="text" id="describe" /><button onclick="add();">+</button><br />
+<h4>备注中：user&password</h4>
+</body>
+</html>
